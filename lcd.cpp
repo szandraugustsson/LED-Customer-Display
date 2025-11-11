@@ -34,6 +34,22 @@ void HD44780::WriteText(char *text) {
     charCount++;
   }
 }
+void HD44780::WriteTextTopRow(char *text) {
+  int charCount = 0; // Track the number of characters printed
+  while (*text) {
+    if (charCount == 32) { // Move to the second line after 16 characters
+      GoTo(0, 1);
+    } 
+    // else if (charCount ==
+    //            32) { // Reset if more than 32 characters (display size)
+    //   Clear();       // Clear the display
+    //   GoTo(0, 0);    // Return to the first line
+    //   charCount = 0; // Reset character count
+    // }
+    WriteData(*text++);
+    charCount++;
+  }
+}
 
 void HD44780::GoTo(unsigned char x, unsigned char y) {
   unsigned char addr = 0x80 + x + (0x40 * y);

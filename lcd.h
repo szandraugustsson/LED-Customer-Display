@@ -52,6 +52,7 @@ public:
   void WriteCommand(unsigned char cmd);
   void WriteData(unsigned char data);
   void WriteText(char *text);
+  void WriteTextTopRow(char *text);
   void GoTo(unsigned char x, unsigned char y);
   void Clear(void);
   void Home(void);

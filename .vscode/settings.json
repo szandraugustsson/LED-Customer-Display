@@ -1,0 +1,11 @@
+{
+    "makefile.makefilePath": "E:\\workspace C\\grupparbete-1\\git\\Reklamtavlan\\Makefile",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "e:\\workspace C\\grupparbete-1\\git\\Reklamtavlan",
+            "binaryPath": "e:\\workspace C\\grupparbete-1\\git\\Reklamtavlan\\avrdemo.elf",
+            "binaryArgs": []
+        }
+    ],
+    "makefile.makePath": "C:\\avr\\bin"
+}
