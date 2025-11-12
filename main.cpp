@@ -8,6 +8,7 @@
 #include "lcd.h"
 #include "uart.h"
 #include "customer.h"
+#include "type.h"
 
 // https://wokwi.com/projects/416241646559459329
 
@@ -54,11 +55,11 @@ int main(void){
                 lcd.Clear();      
 
                 // write LCD text
-                lcd.WriteText((char *)txt+i);
+                lcd.WriteText(txt+i);
                     
                 _delay_ms(485);
             }        
-        }
+        } 
     }
     return 0;
 }
