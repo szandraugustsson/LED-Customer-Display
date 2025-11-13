@@ -5,9 +5,12 @@
 #include <stdbool.h>
 #include <string.h> //strlen()
 #include <stdlib.h> //rand()
+#include <stdint.h> //uint8_t
 #include "lcd.h"
 #include "uart.h"
 #include "customer.h"
+#include "specchar.h"
+#include "bitmasklib.h"
 
 // https://wokwi.com/projects/416241646559459329
 
@@ -25,6 +28,7 @@ int main(void){
     init_serial();
     HD44780 lcd;
     lcd.Initialize(); // Initialize the LCD
+    RegChar2CGRAM(lcd); // Upload special chars to CGRAM
 
     // create all (5) customers.
     Customer user[5];
