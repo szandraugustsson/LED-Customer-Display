@@ -109,9 +109,7 @@ void ScrollL2R(HD44780 &lcd,char *inputStrang)
 }
 
 // char GetBitmap(HD44780 &lcd, char inChar)
-// {
-//     if(inChar  == 'A'){lcd.CreateChar(0,AUp);return AUp;}
-// }
+
 
 //--------------------------------MAIN--------------------------------------
 int main(void)
@@ -172,67 +170,33 @@ uint8_t MLo[8] = { 0b00000, 0b00000, 0b11010, 0b10101, 0b10101, 0b10101, 0b10101
 //SPACE
 uint8_t SPACE[8] = { 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b00000 };
 
-    Customer customers[5]; // array "customers" innehåller 1 element per kund
+    Customer customers[5]; // 
     
 
 
-    
-    //strcpy(customers[0].name, "Hederlige Harrys Bilar");
-    customers[0].paid = 5000; // 1:a element i array "customers" tilldelas 5000 "lotter"    / Tot. 14500 lotter
-    customers[0].messageCount = 3; // etablerar hur många Ads kund tilldelats
-    
-    // varje element i .messages representerar 1 av max 3 Ad-meddelande 
-    strcpy(customers[0].messages[0].AdMessage,"Köp bil hos Harry");            // 0-1666
-    strcpy(customers[0].messages[1].AdMessage,"En god bilaffär (för Harry!)"); // 1667-3332
-    strcpy(customers[0].messages[2].AdMessage,"Hederlige Harrys Bilar");       // 3333-4999
-    
-    //strcpy(customers[1].name, "Farmor Ankas Pajer AB");
-    customers[1].paid = 3000; 
-    customers[1].messageCount = 2; 
-
-    strcpy(customers[1].messages[0].AdMessage,"Köp paj hos Farmor Anka");             // 5000-6499
-    strcpy(customers[1].messages[1].AdMessage,"Skynda innan Marten atit alla");//pajer // 6500-7999
-
-   //strcpy(customers[2].name, "Svarte Petters Svartbyggen");
-    customers[2].paid = 1500; 
-    customers[2].messageCount = 2;
-    
-    strcpy(customers[2].messages[0].AdMessage,"Låt Petter bygga åt dig");  // 8000-8749
-    strcpy(customers[2].messages[1].AdMessage,"Bygga svart? Ring Petter"); // 8750-9499
-    
-    //strcpy(customers[3].name, "Långbens detektivbyrå"); Dennis
     customers[3].paid = 4000;                   
     customers[3].messageCount = 2;
     
     strcpy(customers[3].messages[0].AdMessage,"Mysterier? Ring Långben");  // 9500-11499
-    strcpy(customers[3].messages[1].AdMessage,"ABabbb");     // 11500-13499 Långben fixar biffen
+    strcpy(customers[3].messages[1].AdMessage,"Långben fixar biffen");     // 11500-13499 
     
-    //strcpy(customers[4].name, "IOT:s Reklambyrå");
-    customers[4].paid = 1000;                         
-    customers[4].messageCount = 1;                           
-    
-    strcpy(customers[4].messages[0].AdMessage,"Synas här? IOT:s Reklambyrå");  // 13500-14500   
+   
 
     srand(time(NULL));
     
-    //--------------------------------------------------------------------------------
-    // ScrollL2R(lcd,customers[3].messages[1].AdMessage);
+   
     
-    CGRAM(customers[3].messages[1].AdMessage);
+    
+    CGRAM(customers[3].messages[0].AdMessage);
+    lcd.Clear();
 
 
-//void FadeIn(char *inputStr) 
-lcd.Clear();
-// char inputStr[sizeof(customers[3].messages[1].AdMessage)];   // Långben fixar biffen
-// memset(inputStr,0,sizeof(inputStr));
-// strcpy(inputStr,customers[3].messages[1].AdMessage);
+//----------------------------HÄR BÖRJAR ANIMATION SOM PRINTAR STRÄNG 1 PIXELRAD I TAGET----------------------------------
 
-    // Iteration for printing singular row masks of lcd bitmaps
-
+    char *inputStr = customers[3].messages[0].AdMessage; 
     uint8_t tmpBit[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank custom char assigned to CGRAM-slot 0
-    uint8_t slicedChar[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank custom char assigned to CGRAM-slot 8
+    uint8_t slicedChar[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank custom char
 
-    char inputStr[] = "Hej";
 
     for(int i = 0; i < strlen(inputStr); i++)// om element 1 = A skickar vi hela A-Bitmapen till slicedchar
     {   
@@ -262,123 +226,183 @@ lcd.Clear();
         else if(inputStr[i]  == 'l'){ memcpy(slicedChar, LLo, sizeof(LLo)); }  else if(inputStr[i]  == 'y'){ memcpy(slicedChar, YLo, sizeof(YLo)); } 
         else if(inputStr[i]  == 'M'){ memcpy(slicedChar, MUp, sizeof(MUp)); }  else if(inputStr[i]  == 'Z'){ memcpy(slicedChar, ZUp, sizeof(ZUp)); } 
         else if(inputStr[i]  == 'm'){ memcpy(slicedChar, MLo, sizeof(MLo)); }  else if(inputStr[i]  == 'z'){ memcpy(slicedChar, ZLo, sizeof(ZLo)); } 
-        
+        else if((uint8_t)inputStr[i] == 0xC3 && (uint8_t)inputStr[i+1] == 0x85) { memcpy(slicedChar, AW, sizeof(AW)); }
+        else if((uint8_t)inputStr[i] == 0xC3 && (uint8_t)inputStr[i+1] == 0x84) { memcpy(slicedChar, aw, sizeof(aw)); }
+        else if((uint8_t)inputStr[i] == 0xC3 && (uint8_t)inputStr[i+1] == 0x96) { memcpy(slicedChar, AE, sizeof(AE)); }
+        else if((uint8_t)inputStr[i] == 0xC3 && (uint8_t)inputStr[i+1] == 0xA5) { memcpy(slicedChar, ae, sizeof(ae)); }
+        else if((uint8_t)inputStr[i] == 0xC3 && (uint8_t)inputStr[i+1] == 0xA4) { memcpy(slicedChar, OO, sizeof(OO)); }
+        else if((uint8_t)inputStr[i] == 0xC3 && (uint8_t)inputStr[i+1] == 0xB6) { memcpy(slicedChar, oo, sizeof(oo)); }
         else if(inputStr[i]  == ' '){ memcpy(slicedChar, SPACE, sizeof(SPACE)); }
+        else { memcpy(slicedChar, SPACE, sizeof(SPACE)); }
          
-        //uint8_t slicedChar[8];  // All 8 rows(array) of currently iterated char 
 
+    
+        int Row; int Step = 16;
+        
             for(int j = 0; j < 8; j++)
-                {     
+                {    
                 tmpBit[j] = slicedChar[j];   // tmpBit tar emot 1 bitrow i taget från sliced char
                 lcd.CreateChar(0, tmpBit);   // och printar 1 gång för varje rad den tar emot
-                lcd.GoTo(i,0);
+                if     (i<16) {Row = 0; lcd.GoTo(i,Row); }
+                else if(i>=16) {Row = 1; lcd.GoTo(i-Step,Row);}
                 lcd.WriteData(0); // 0 = tmpBit      // Varje iteration printar  tmpBit
-                _delay_ms(250);
-                }                     
+                _delay_ms(5);
+                }    
 
-        lcd.GoTo(i,0);
+        if     (i<16) {Row = 0; lcd.GoTo(i,Row); }
+        else if(i>=16) {Row = 1; lcd.GoTo(i-Step,Row);}
         lcd.WriteData(inputStr[i]);
+    }                                                      
         
-                // CGRAM är global och behöver därför att jag ger ett annat värde till varje cell innan jag går vidare
-    }
+//----------------------------HÄR SLUTAR ANIMATION SOM PRINTAR STRÄNG 1 PIXELRAD I TAGET----------------------------------
+
+
+//----------------------------HÄR BÖRJAR FUNKTION FÖR CUSTOM ANIMATION----------------------------------
     
-    // _delay_ms(5000);
-    // Break row på bra ställe funktion
-    // Blinka efter utskrift(ev. speedupblink)
+    // lcd.Clear();
 
-/*
-Jag vill:
+    // uint8_t SPACEz[8] = { 0b01100,   //     10000   Rita figur på dessa
+    //                       0b10010,   //     01000   
+    //                       0b10001,   //     00001
+    //                       0b10001,   //     00100
+    //                       0b01010,   //     00010
+    //                       0b01100,   //     01000
+    //                       0b01010,   //     00100
+    //                       0b11011 }; //     10000
 
-lcd.CreateChar(0, tmpBit); // skapa custom som innehåller rad1 av bitmap
-lcd.WriteData(0)           // printa den  
-lcd.CreateChar(0, tmpBit); // skapa custom (i samma slot) som innehåller rad1+rad2 av bitmap(?)
-lcd.WriteData(0)           // printa den
--II- tot. * 7  // repetera tills hela bokstaven är klar
-lcd.WriteText  // printa index 0 av sträng
------------------II------------// Repetera tills hela strängen är utskriven
+    
+    
+    // char messagez[] = "                                "; // 32 space att iterera över
 
+    // char *inputStrz = messagez; 
 
-*/
+    // uint8_t tmpBitz[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank bitmask array where j char gets stored every loop
+    // uint8_t slicedCharz[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank bitmask array where 1 element of string gets stored
+    
+    // for(int i = 0; i < strlen(inputStrz); i++)// 
 
-
-    // while(1)
-    // {
-        //     int RandNum = rand() % 14500;
-    //     lcd.Clear();    
-    //     if(RandNum > 0 && RandNum < 1667)                 // 0-1666
-    //         {lcd.WriteText(customers[0].messages[0].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 1666 && RandNum < 3333)         // 1667-3332
-    //         {lcd.WriteText(customers[0].messages[1].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 3332 && RandNum < 5000)         // 3333-4999
-    //         {lcd.WriteText(customers[0].messages[2].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 4999 && RandNum < 6500)         // 5000-6499
-    //         {lcd.WriteText(customers[1].messages[0].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 6499 && RandNum < 8000)         // 6500-7999
-    //         {lcd.WriteText(customers[1].messages[1].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 7999 && RandNum < 8750)         // 8000-8749
-    //         {lcd.WriteText(customers[2].messages[0].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 8749 && RandNum < 9500)         // 8750-9499
-    //         {lcd.WriteText(customers[2].messages[1].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 9499 && RandNum < 11500)         // 9500-11499
-    //         {lcd.WriteText(customers[3].messages[0].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 11499 && RandNum < 13500)         // 11500-13499
-    //         {lcd.WriteText(customers[3].messages[1].AdMessage);_delay_ms(3000);}
-    //     else if(RandNum > 13499 && RandNum < 14500)         // 13500-14500
-    //         {lcd.WriteText(customers[4].messages[0].AdMessage);_delay_ms(3000);}         
-    // }
-
-        /*
-
-        1. En struct med kund: betalning, namn
-        2. En struct med reklamtext (text mot rätt kund)
-        3. Reklamtid = 20sek (FRÅGA: sleep är olika på olika os..?)
-        4. Slumpa fram kund, beroende på betalning. rand().
-        5. Om vi har tid: Skrolla/rulla texten.
-
-Hederlige Harrys Bilar:
-Betalat 5000. Vill slumpmässigt visa en av tre meddelanden
-"Köp bil hos Harry"  (scroll)
-"En god bilaffär (för Harry!)" text
-"Hederlige Harrys Bilar" text (blinkande)
- 
-Farmor Ankas Pajer AB:
-Betalat 3000. Vill slumpmässigt visa en av två
-"Köp paj hos Farmor Anka"  (scroll)
-"Skynda innan Mårten ätit alla pajer" text
- 
-Svarte Petters Svartbyggen:
-Betalat 1500. Vill visa
-"Låt Petter bygga åt dig"  (scroll) - på jämna minuter
-"Bygga svart? Ring Petter" text - på ojämna minuter
- 
-Långbens detektivbyrå:
-Betalat 4000. Vill visa
-"Mysterier? Ring Långben"  text 
-"Långben fixar biffen" text 
- 
-Ibland måste vi visa reklam för oss själva:
-motsvarande för 1000 kr. 
-Meddelande "Synas här? IOT:s Reklambyrå"
-
-        */
+    // { printf("CHAR count: %d \n",i);
 
 
-    // lcd.WriteText((char *)"Hej hej"); // Writetext är färdig class för att skriva ut reklamtext
-    // printf("Hej hej\n");
-    // int r = 12;
-    // printf("Hej 2 %d\n",r);
-    // // //Sätt till INPUT_PULLUP
-    // BIT_CLEAR(DDRB,BUTTON_PIN); // INPUT MODE
-    // BIT_SET(PORTB,BUTTON_PIN); 
+    
+    
+    //      memcpy(slicedCharz, SPACEz, sizeof(SPACEz)); // ge bitmapen SPACEz till slicedCharz
+   
 
-    // DATA DIRECTION = avgör mode
-    // om output så skickar vi  1 eller 0 på motsvarande pinne på PORT
-    // om input så läser vi  1 eller 0 på motsvarande pinne på PIN
-    //bool blinking = false;
+    // int Rowz; int Stepz = 16;
+        
+    //         for(int j = 0; j < 8; j++)
+    //             {    
+    //             tmpBitz[j] = slicedCharz[j];   // tmpBit tar emot 1 bitrow i taget från sliced char
+    //             lcd.CreateChar(0, tmpBitz);   // tar hela tmpBitz, därför måste tmpBitz få uppdaterad bitmap varje iteration
+    //             if     (i%2==0 || j == 7) {Rowz = 0; lcd.GoTo(i,Rowz);SPACEz[j] >>= 1;} // varannan charloop[i] rör sig rad 7 1 steg höger
+    //             else if(i%2==1 || j == 7) {Rowz = 1; lcd.GoTo(i,Rowz);SPACEz[j] <<= 1;} // varannan charloop[i] rör sig rad 7 1 steg vänster
+    //             lcd.WriteData(0); // 0 = tmpBit      // Varje iteration printar  tmpBit
+    //             printf("j count: %d ",j);
+    //             _delay_ms(50);
+    //             if      (i>4 &&           j==7 || j==5){SPACEz[j] >>= 1;} // rad 5 och 7 shiftar 4 steg höger(1 per [i]) innan dem 
+    //             else if(i<=4 &&           j==7 || j==5){SPACEz[j] <<= 1;} // börjar gå tillbaka lika många steg vänster
+    //             else if (i<12 && i>8 &&   j==7 || j==5){SPACEz[j] >>= 1;} 
+    //             else if (i>=12 && i<16 && j==7 || j==5){SPACEz[j] <<= 1;} 
+    //             }
 
-    //BIT_SET(DDRB,LED_PIN); //OUTPUT MODE
+    //     if     (i%2==0) 
+    //     {Rowz = 0; lcd.GoTo(i,Rowz); 
+    //     lcd.WriteData(inputStrz[i]);
+    //     }       
+    //     else if(i%2==1) 
+    //     {Rowz = 1; lcd.GoTo(i,Rowz); 
+    //     lcd.WriteData(inputStrz[i]);
+    //     }  
+                    
+    // }                                                      
+
+
+//----------------------------HÄR SLUTAR FUNKTION FÖR CUSTOM ANIMATION----------------------------------
+
 
 
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// inputstring tar emot strängen
+// iterera över sträng för att hitta vilken bitmap man vill ha
+// slicedchar hämtar hel bitmap(ex Aa)
+// slicedchar ger bittmp 1 rad per loop
+// bitmap printar rad och sparar den
+//__________________HÄR___________________
+    // uint8_t bitPix[8] = { 0b10010,0b10010,0b10010,0b00000,0b00000,0b00000,0b00000,0b00000 };
+    // lcd.CreateChar(0, bitPix); // Assign to CGRAM slot 0
+    
+    // uint8_t pixel[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; //slicechar
+    // uint8_t pixelTmp[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; //tmpBit
+    
+    // char inputStr[] = {0,0,0,0,0,0,0,0,'\0'};
+    // //for(int j = 0; j<2; j++) 
+    // for(int i = 0; i < strlen(inputStr); i++)    
+    // {    
+    // if     (inputStr[i]  == 0)memcpy(pixel, bitPix, sizeof(bitPix));                                    
+    // int Row; int Step = 16;                  
+
+    //         for(int j = 0; j < 8; j++)
+    //         {
+    //             pixelTmp[j] = pixel[j];
+    //             lcd.CreateChar(0, pixelTmp); // Assign to CGRAM slot 0
+    //             _delay_ms(400);
+    //             lcd.WriteData(0);       // print pixel 
+    //             // pixel[j] = pixel[j] >> 1;   // Shift bit 1 step right
+    //             // pixel[j+1] = pixel[j]; // Shift element 1 step right
+
+    //         }
+    //         lcd.WriteData(inputStr[i]);
+    //}//__________________HÄR___________________
+   // Långben fixar biffen
+
+    // Iteration for printing singular row masks of lcd bitmaps
+ 
+//void GetBitMap(char *inputStr){}
+    //     char *inputStr = customers[3].messages[0].AdMessage; 
+    //     uint8_t tmpBit[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank custom char assigned to CGRAM-slot 0
+    //     uint8_t slicedChar[8] = { 0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000 }; // Blank custom char
+
+    // for(int i = 0; i < strlen(inputStr); i++)// om element 1 = A skickar vi hela A-Bitmapen till slicedchar
+    // {                                                                                                                     
+    // int Row; int step = 16;                         
+        
+    //         for(int j = 0; j < 8; j++)
+    //             {    
+    //             tmpBit[j] = slicedChar[j];   // tmpBit tar emot 1 bitpixel i taget från sliced char
+    //             lcd.CreateChar(0, tmpBit);   // och printar 1 gång för varje rad den tar emot
+    //             if     (i<16) {Row = 0; lcd.GoTo(i,pixel); }
+    //             else if(i>=16) {Row = 1; lcd.GoTo(i-step,pixel);}
+    //             lcd.WriteData(0); // 0 = tmpBit      // Varje iteration printar  tmpBit
+    //             _delay_ms(5);
+    //             }    
+
+    //     // if     (i<16) {Row = 0; lcd.GoTo(i,Row); }
+    //     // else if(i>=16) {Row = 1; lcd.GoTo(i-step,Row);}
+    //     lcd.WriteData(inputStr[i]);
+        
+    //             // CGRAM är global och behöver därför att jag ger ett annat värde till varje cell innan jag går vidare
+    // }
