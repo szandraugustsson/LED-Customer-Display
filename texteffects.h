@@ -5,6 +5,7 @@
 #include "customer.h"
 
 void scrollText(HD44780 *lcd, char *txt);
+void blinkText(HD44780 *lcd, char *txt);
 void createSpecChar(HD44780 *lcd);
 void FixSpecChar(char *InStr);
 void GetBitmap(char inputChar, uint8_t slicedChar[8]); 

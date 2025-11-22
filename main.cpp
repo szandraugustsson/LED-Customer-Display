@@ -45,17 +45,21 @@ int main(void){
         
         // get a random text (index)
         int textIndex = rand() % user[userToPresent].messagesCount;
-        
-        printf("Now presenting: %d | Text id: %d\n", userToPresent, textIndex);
 
         char *txt = user[userToPresent].message[textIndex].message;
         
         FixSpecChar(txt);
         lcd.Clear();
+
+        printf("Now presenting: %d | Text id: %d\n", userToPresent, textIndex);
+
         if (textIndex == 0 && (userToPresent == 0 || userToPresent == 1 || userToPresent == 2)){
             scrollText(&lcd, txt);
         }
-        else if (userToPresent == 3 ){
+        else if(userToPresent == 0 && textIndex == 2){
+            blinkText(&lcd, txt);
+        }
+        else if (userToPresent == 3){
             FadeInString(&lcd, txt);
         }
         else{

@@ -38,6 +38,25 @@ void scrollText(HD44780 *lcd, char *txt){
     }
 }
 
+void blinkText(HD44780 *lcd, char *txt){
+    //upprepar 20 gånger: 0,5s synlig + 0,5s tom -> 1s per loop, 20s totalt)
+    for (int i = 0; i < 20; i++){
+        //först visar det texten
+        lcd->Clear();
+        lcd->GoTo(0,0);
+        lcd->WriteText(txt);
+        for (int j = 0; j < 10; j++){
+            _delay_ms(50);
+        }
+
+        //sedan rensar det skärmen
+        lcd->Clear();
+        for (int k = 0; k < 10; k++){
+            _delay_ms(50);
+        }
+    }
+}
+
 void createSpecChar(HD44780 *lcd){
     // Bitmaps for custom chars Å,Ä,Ö,å,ä,ö
     uint8_t AW[8] = { 0b00100,0b00000,0b01110,0b10001,0b11111,0b10001,0b00000,0b10001 }; // Å
@@ -190,6 +209,7 @@ void GetBitmap(char inputChar, uint8_t slicedChar[8])
     }        
 }
 
+
 void FadeInString(HD44780 *lcd, char *txt) 
 {
     char *inputStr = txt;   
@@ -240,6 +260,7 @@ void FadeInString(HD44780 *lcd, char *txt)
 
     // lcd->Clear();                                                          
 } 
+
 
 int CleanBreak(char *inputStr) // Prevents row break mid-word 
 {
@@ -292,4 +313,3 @@ void DiscoMan(HD44780 *lcd)
         }
     lcd->Clear();         
 }
-
