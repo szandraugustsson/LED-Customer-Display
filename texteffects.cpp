@@ -387,3 +387,13 @@ void splitTxt(HD44780 &lcd, char *txt){
         _delay_ms(2000);
     }
 }
+
+bool isEvenMin(){
+    //först vill jag få den aktuella tiden:
+    time_t currentTime = time(NULL); //den lagrar tiden i sekunder sen 1970
+    int totalMinutes = currentTime / 60; //hur många minuter har gått totalt
+    int totalHours = totalMinutes / 60; //hur många hela timmar har gått
+    int minutes = totalMinutes % 60; //får minutvärdet i den aktuella timmen
+    return (minutes % 2 == 0);
+    //true - jämn
+}

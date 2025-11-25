@@ -83,7 +83,22 @@ int main(void){
 
         lcd.Clear();
 
-            if (textIndex == 0 && (userToPresent == 0 || userToPresent == 1 || userToPresent == 2)){
+            if (userToPresent == 2){
+                if (isEvenMin()){
+                    txt = user[2].message[0].message;
+                    scrollText(&lcd,txt);
+                }
+                else{
+                    txt = user[2].message[1].message;
+                    lcd.GoTo(0,0);
+                    lcd.WriteText(txt);
+
+                    for (int i = 0; i < 100; i++){
+                    _delay_ms(200);
+                    }
+                }
+            }
+            else if (textIndex == 0 && (userToPresent == 0 || userToPresent == 1)){
                 scrollText(&lcd, txt);
             }
             else if(userToPresent == 0 && textIndex == 2){
@@ -92,7 +107,7 @@ int main(void){
             else if (userToPresent == 3){
                 fadeInString(&lcd, txt);
             }
-            else if ((userToPresent == 2 && textIndex == 1) || (userToPresent == 4 && textIndex == 0)){
+            else if (userToPresent == 4 && textIndex == 0){
                 typeAnimation(lcd, txt);
             }
             else if (strlen(txt) > 32){
@@ -103,7 +118,7 @@ int main(void){
                 lcd.WriteText(txt);
 
                 for (int i = 0; i < 100; i++){
-                _delay_ms(50);
+                _delay_ms(200);
             }
         } 
     }
