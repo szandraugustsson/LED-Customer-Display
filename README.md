@@ -34,7 +34,7 @@ The project simulates a dynamic customer display on a 16x2 LCD using an AVR micr
 - Handling special characters on a limited display
 - Simulating hardware without physical components using Wokwi
 
-## How to Run
+## How to Build and Run
 
 1. Clone the repository
 ```
@@ -52,4 +52,5 @@ This will generate the hex file (avrdemo.hex) in the project folder.
 3. Run in Wokwi Simulator
 
 Open the project in Wokwi: https://wokwi.com/projects/416241646559459329
+
 Upload the generated hex file.
