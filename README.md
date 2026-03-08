@@ -38,8 +38,8 @@ The project simulates a dynamic customer display on a 16x2 LCD using an AVR micr
 
 1. Clone the repository
 ```
-git clone https://github.com/szandraugustsson/LED-Customer-Display.git
-cd LED-Customer-Display
+git clone https://github.com/szandraugustsson/LCD-Customer-Display.git
+cd LCD-Customer-Display
 ```
 2. Build the project
 
