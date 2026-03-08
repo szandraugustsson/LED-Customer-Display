@@ -1,0 +1,56 @@
+CC=avr-g++
+LD=avr-ld
+OBJCOPY=avr-objcopy
+OBJDUMP=avr-objdump
+AVRSIZE=avr-size
+OBJISP=avrdude
+MCU=atmega328p
+CFLAGS=-Wall -Wextra  -Wundef -pedantic \
+		-Os  -DF_CPU=16000000UL -mmcu=${MCU} -DBAUD=19200
+LDFLAGS=-mmcu=$(MCU)
+# PORT=/dev/tty.usbserial-xxxx
+BIN=avrdemo
+OUT=${BIN}.hex
+SOURCES = main.cpp lcd.cpp uart.cpp customer.cpp texteffects.cpp
+
+DEBUG?=1
+
+ifeq ($(DEBUG), 1)
+	OUTPUTDIR=bin/debug
+else
+	OUTPUTDIR=bin/release
+endif
+
+OBJS =  $(addprefix $(OUTPUTDIR)/,$(SOURCES:.cpp=.o))
+
+all: $(OUTPUTDIR)  $(OUT) 
+
+$(OBJS): Makefile
+
+$(OUTPUTDIR)/%.o:%.cpp
+	$(CC) $(CFLAGS) -MD -o $@ -c $<
+
+%.lss: %.elf
+	$(OBJDUMP) -h -S -s $< > $@
+
+%.elf: $(OBJS)
+	$(CC) -Wl,-Map=$(@:.elf=.map) $(LDFLAGS) -o $@ $^
+	$(AVRSIZE) $@
+
+
+$(OBJS):$(SOURCES)
+
+%.hex: %.elf
+	$(OBJCOPY) -O ihex -R .fuse -R .lock -R .user_signatures -R .comment $< $@
+
+isp: ${BIN}.hex
+	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$<
+
+
+clean:
+	rm -f "$(OUT)"  *.map *.P *.d
+
+$(OUTPUTDIR): 
+	@mkdir -p "$(OUTPUTDIR)"
+		   	
+.PHONY: clean dirs
